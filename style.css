@@ -1,0 +1,27 @@
+i {
+    position: relative;
+    color:red;
+}
+
+#tuamae {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    margin:0px;
+}
+
+.left p,
+.left h5 {
+    margin:0px;
+}
+
+.form-input {
+    border:none;
+    outline: none;
+    background: none;
+}
