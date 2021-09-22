@@ -7,17 +7,13 @@ $pdo = new PDO('mysql:host=localhost;dbname=api', 'root', '', [
 ]);
 
 if (isset($_POST['idComment'])) {
-    $idComment = $_POST['idComment'];
 
-    $deletar = $pdo->prepare("DELETE FROM comment WHERE id = :id");
-    $deletar->bindParam(':id', $idComment);
+    $deletar = $pdo->prepare("DELETE FROM comment WHERE id = ?");
+    $deletar->bindParam(1, $_POST['idComment']);
     $deletar->execute();
 
-    $obj = array(
+    echo json_encode(array(
         'status' => "success",
-        'delete' => $idComment 
-    );
-    echo json_encode($obj);
+        'delete' => $_POST['idComment']
+    ));
 }
-
-?>
