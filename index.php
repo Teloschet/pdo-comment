@@ -53,14 +53,7 @@ $feedcommentid = $feedcomment->fetchAll(PDO::FETCH_ASSOC);
             <hr>
             <h2>Comments here</h2>
             <?php
-
-            $list = $pdo->prepare("SELECT * FROM comment ORDER BY id DESC");
-            $list->execute();
-            $comentarios = $list->fetchAll(PDO::FETCH_ASSOC);
-
-            $total_comentarios = $list->rowCount();
-
-            foreach ($comentarios as $comment) {
+            foreach ($pdo->query("SELECT * FROM comment ORDER BY id DESC") as $comment) {
             ?>
                 <div class="row gy-5" style="margin-bottom:10px;">
                     <div class="col-100">
@@ -69,11 +62,11 @@ $feedcommentid = $feedcomment->fetchAll(PDO::FETCH_ASSOC);
                                 <h5><?= htmlspecialchars($comment['name']) ?></h5>
                                 <p><?= htmlspecialchars($comment['comment']) ?></p>
                             </div>
-                            
+
                             <div class="right">
-                                    <button onclick="delet(<?= $comment['id'] ?>)" data-row-id="<?= $comment['id'] ?>" class="form-input">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                <button onclick="delet(<?= $comment['id'] ?>)" data-row-id="<?= $comment['id'] ?>" class="form-input">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -93,24 +86,25 @@ $feedcommentid = $feedcomment->fetchAll(PDO::FETCH_ASSOC);
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
-
         $('#formcomment').submit(function(e) {
-                    e.preventDefault();
+            e.preventDefault();
 
-                    var u_name = $('#name').val();
-                    var u_comment = $('#comment').val();
+            var u_name = $('#name').val();
+            var u_comment = $('#comment').val();
 
-                    $.ajax({
-                                url: '/inserir.php',
-                                type: 'POST',
-                                data: {'name': u_name, 'comment': u_comment},
-                                async: true,
-                                success: function(resultado)
-                                {
-                                    window.location.href = "/";
-                                }
-                            });
-                });
+            $.ajax({
+                url: '/inserir.php',
+                type: 'POST',
+                data: {
+                    'name': u_name,
+                    'comment': u_comment
+                },
+                async: true,
+                success: function(resultado) {
+                    window.location.href = "/";
+                }
+            });
+        });
 
         function delet(idComment) {
             var deletButton = document.querySelector('.form-input[data-row-id="' + idComment + '"]');
